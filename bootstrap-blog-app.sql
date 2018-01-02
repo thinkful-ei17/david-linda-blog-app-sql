@@ -31,3 +31,25 @@ CREATE TABLE comments (
     content_comment text
 )
 
+-- created 4 users
+
+INSERT INTO users (first_name, last_name, email_address, screen_name) VALUES
+('Linda', 'Foo1', 'hello1@yahoo.com', 'lindauser1'),
+('David', 'Park1', 'hellopark2@gmail.com', 'daviduser1'),
+('Linda', 'Foo2', 'hello2@yahoo.com', 'lindauser2'),
+('David', 'Park2', 'hellopark2@gmail.com', 'daviduser2');
+
+--created 2 new posts
+
+INSERT INTO posts (author, title, content_post, comments, tags) VALUES
+('lindauser1', 'First Post', 'This is my first post', 3, 'entertainment'),
+('daviduser1', 'First Post - david', 'This is my first post - david', 2, 'current events');
+
+--created 3 comments; 2 comments on the first post (2 diff users), 1 comment on the second post
+INSERT INTO comments (author, post, content_comment) VALUES
+('lindauser1', '1', 'I am comment on my first post'),
+('daviduser1', '1', 'I am commenting on lindas first post'),
+('lindauser2', '2', 'I am commenting on davids first post');
+
+
+
