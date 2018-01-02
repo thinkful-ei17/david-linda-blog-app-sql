@@ -21,18 +21,17 @@ CREATE TABLE users (
 
 CREATE TABLE posts (
     id serial PRIMARY KEY,
-    author_id integer REFERENCES users ON DELETE CASCADE,
+    author_id integer REFERENCES users ON DELETE RESTRICT,
     title text,
     content_post text,
     published_time timestamp DEFAULT current_timestamp,
-    comments integer DEFAULT 0,
     tags tags_options
 );
 
 CREATE TABLE comments (
     id serial PRIMARY KEY,
-    author_id integer REFERENCES users ON DELETE CASCADE,
-    post_id integer REFERENCES posts,
+    author_id integer REFERENCES users ON DELETE CASCADE NOT NULL,
+    post_id integer REFERENCES posts ON DELETE CASCADE NOT NULL,
     content_comment text
 );
 
@@ -46,15 +45,13 @@ INSERT INTO users (first_name, last_name, email_address, screen_name) VALUES
 
 --created 2 new posts
 
-INSERT INTO posts (author_id, title, content_post, comments, tags) VALUES
-(1, 'First Post', 'This is my first post', 3, 'entertainment'),
-(2, 'First Post - david', 'This is my first post - david', 2, 'current events');
+INSERT INTO posts (author_id, title, content_post, tags) VALUES
+(1, 'First Post', 'This is my first post', 'entertainment'),
+(2, 'First Post - david', 'This is my first post - david', 'current events');
 
 --created 3 comments; 2 comments on the first post (2 diff users), 1 comment on the second post
 INSERT INTO comments (author_id, post_id, content_comment) VALUES
 (1, 1, 'I am comment on my first post'),
 (2, 1, 'I am commenting on lindas first post'),
 (3, 2, 'I am commenting on davids first post');
-
-
 
