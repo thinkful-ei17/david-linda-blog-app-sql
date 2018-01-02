@@ -1,5 +1,9 @@
 -- Create tables for posts, comments, users --
 
+DROP TABLE IF EXISTS users;
+DROP TABLE IF EXISTS posts;
+DROP TABLE IF EXISTS comments;
+DROP TYPE IF EXISTS tags_options;
 
 CREATE TYPE tags_options AS ENUM (
     'current events',
@@ -17,7 +21,7 @@ CREATE TABLE users (
 
 CREATE TABLE posts (
     id serial PRIMARY KEY,
-    author text REFERENCES users(screen_name),
+    author_id integer REFERENCES users ON DELETE CASCADE,
     title text,
     content_post text,
     published_time timestamp DEFAULT current_timestamp,
@@ -26,10 +30,11 @@ CREATE TABLE posts (
 );
 
 CREATE TABLE comments (
-    author text REFERENCES users(screen_name),
-    post text REFERENCES posts(id),
+    id serial PRIMARY KEY,
+    author_id integer REFERENCES users ON DELETE CASCADE,
+    post_id integer REFERENCES posts,
     content_comment text
-)
+);
 
 -- created 4 users
 
@@ -41,15 +46,15 @@ INSERT INTO users (first_name, last_name, email_address, screen_name) VALUES
 
 --created 2 new posts
 
-INSERT INTO posts (author, title, content_post, comments, tags) VALUES
-('lindauser1', 'First Post', 'This is my first post', 3, 'entertainment'),
-('daviduser1', 'First Post - david', 'This is my first post - david', 2, 'current events');
+INSERT INTO posts (author_id, title, content_post, comments, tags) VALUES
+(1, 'First Post', 'This is my first post', 3, 'entertainment'),
+(2, 'First Post - david', 'This is my first post - david', 2, 'current events');
 
 --created 3 comments; 2 comments on the first post (2 diff users), 1 comment on the second post
-INSERT INTO comments (author, post, content_comment) VALUES
-('lindauser1', '1', 'I am comment on my first post'),
-('daviduser1', '1', 'I am commenting on lindas first post'),
-('lindauser2', '2', 'I am commenting on davids first post');
+INSERT INTO comments (author_id, post_id, content_comment) VALUES
+(1, 1, 'I am comment on my first post'),
+(2, 1, 'I am commenting on lindas first post'),
+(3, 2, 'I am commenting on davids first post');
 
 
 
